@@ -61,7 +61,9 @@ parser.setContentHandler(Handler)
 serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
 
 # get local machine name
-host = '127.0.0.1'                         
+# host = '127.0.0.1'   
+
+host = '172.20.66.112'                      
 
 port = 9999                                           
 

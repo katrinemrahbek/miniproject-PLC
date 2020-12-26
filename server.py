@@ -23,11 +23,13 @@ with open(filename, 'r') as csvfile:
 def cvshandling(station, carrier):
    return array2D[carrier][station]
 
+
 # Writes the xml string in a file
 def filehandler(data):
    f = open("carrierfile.xml", "w")
    f.write(data)
    f.close
+
 
 # Parses the xml string
 class carrierHandler(xml.sax.ContentHandler):
@@ -49,15 +51,16 @@ class carrierHandler(xml.sax.ContentHandler):
          print("ID = ", self.carrierID)
       self.CurrentData = ""
 
-   def characters(self, content): 
+   def characters(self, content): # is called on the content between the start-tag and end-tag
       if self.CurrentData == "carrierID":
          self.carrierID =content
    
 
-parser =xml.sax.make_parser()
-Handler = carrierHandler()
+# create an XMLReader
+parser =xml.sax.make_parser() 
+# override the default ContextHandler
+Handler = carrierHandler()    
 parser.setContentHandler(Handler)
-
 
 
 # create a socket object

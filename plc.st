@@ -1,3 +1,18 @@
+PROGRAM PLC_PRG
+VAR
+	TCP				:	DC_ECP.TcpClientByteStream;
+	timer			:	TON;
+	RFID			:	dc_ecp.Dtm425;
+	rfidData		:	dc_ecp.st_CPF_RfidData;
+	carrierID: UINT;
+	state: INT := 0;
+	palletID: UINT;
+	dataOut: STRING;
+	stationID: UINT := 5;
+	dataIn: UINT;
+	timeinSec: TIME;
+END_VAR
+
 timer();
 RFID();
 TCP();

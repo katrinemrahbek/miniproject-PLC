@@ -30,12 +30,21 @@ def filehandler(data):
    f.write(data)
    f.close
 
+# writes the decoded info in a file
+def filehandlerTxt(station, pallet):
+   f = open("decoded.txt", "w")
+   f.write("station id: ")
+   f.write(station)
+   f.write(" pallet id: ")
+   f.write(pallet)
+   f.close
 
 # Parses the xml string
 class carrierHandler(xml.sax.ContentHandler):
    def __init__(self):
       self.CurrentData = ""
       self.carrierID = ""
+      self.stationID = ""
       
    def startElement(self, tag, attributes): # is called at the start of a element
       self.CurrentData = tag
@@ -43,8 +52,9 @@ class carrierHandler(xml.sax.ContentHandler):
          print("---carrier---")
       if tag =="station":
          print("___station___")
-         stationID = attributes["id"]
-         print("station ID = ", stationID)
+         self.stationID = attributes["id"]
+         print("station ID = ", self.stationID)
+         
 
    def endElement(self, tag):   # is called at the end of a element
       if self.CurrentData == "carrierID":
@@ -54,6 +64,7 @@ class carrierHandler(xml.sax.ContentHandler):
    def characters(self, content): # is called on the content between the start-tag and end-tag
       if self.CurrentData == "carrierID":
          self.carrierID =content
+   
    
 
 # create an XMLReader
@@ -67,7 +78,7 @@ parser.setContentHandler(Handler)
 serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
 
 # get local machine name
-#host = '127.0.0.1'   
+host = '127.0.0.1'   
 
 # the host and port name
 host = '172.20.66.112'                      
@@ -87,14 +98,26 @@ while True:
    print("Got a connection from %s" % str(addr))
    
    # recieve a message
-   msg = clientsocket.recv(2024)
-   data = msg.decode('utf-8')
+   reading = False
+   msg = "" 
+   while True:
+                data = clientsocket.recv(1)
+                a = data.decode("utf-8")
+
+                if a == ';':
+                    break
+                if reading:
+                    msg = msg + a
+                if a == ':':
+                    reading = True
 
    # put it into a file
-   filehandler(data)
+   filehandler(msg)
    
-   # parsing the XML file 
+   # parsing the XML file and writing the decoded message in a text file
    parser.parse("carrierfile.xml")
+   filehandlerTxt(parser._cont_handler.stationID, parser._cont_handler.carrierID)
+   
 
    # getting the processing time for the carrier at this station
    processing_time=cvshandling(5, int(Handler.carrierID))

@@ -59,11 +59,11 @@ CASE state OF
 	IF rfid.xReady THEN
 			
 		palletID := dc_ecp.SwapWORD(rfidData.uiCarrierID);
-		dataOut:='<station id = "';
+		dataOut:=':<station id = "';
 		dataOut:=CONCAT(dataOut,UINT_TO_STRING(stationID));
 		dataOut:=CONCAT(dataOUT, '"><carrierID>');
 		dataOut:=CONCAT(dataOUT,UINT_TO_STRING(carrierID));
-		dataOut:=CONCAT(dataOut, '</carrierID></station>');
+		dataOut:=CONCAT(dataOut, '</carrierID></station>;');
 			
 			
 		TCP.SendAndReceive(pToSend:=ADR(dataOut), uiSizeToSend:= SIZEOF(dataOut),pToReceive:=ADR(dataIn),uiSizeToReceive:=SIZEOF(dataIn));

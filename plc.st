@@ -4,7 +4,6 @@ VAR
 	timer			:	TON;
 	RFID			:	dc_ecp.Dtm425;
 	rfidData		:	dc_ecp.st_CPF_RfidData;
-	carrierID: UINT;
 	state: INT := 0;
 	palletID: UINT;
 	dataOut: STRING;

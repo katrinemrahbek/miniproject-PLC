@@ -81,7 +81,7 @@ serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 host = '127.0.0.1'   
 
 # the host and port name
-host = '172.20.66.112'                      
+#host = '172.20.66.112'                      
 port = 9999                                           
 
 # bind to the port
@@ -101,15 +101,15 @@ while True:
    reading = False
    msg = "" 
    while True:
-                data = clientsocket.recv(1)
-                a = data.decode("utf-8")
+      data = clientsocket.recv(1)
+      a = data.decode("utf-8")
 
-                if a == ';':
-                    break
-                if reading:
-                    msg = msg + a
-                if a == ':':
-                    reading = True
+      if a == ';':
+         break
+      if reading:
+         msg = msg + a
+      if a == ':':
+         reading = True
 
    # put it into a file
    filehandler(msg)
